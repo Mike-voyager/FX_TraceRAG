@@ -1,5 +1,7 @@
 # TraceRAG
 
+[![CI](https://github.com/Mike-voyager/FX_TraceRAG/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Mike-voyager/FX_TraceRAG/actions/workflows/ci.yml)
+
 An async, typed RAG assistant that answers procedural questions **only from an approved local Markdown SOP corpus**, returns traceable sources and Pydantic-validated structured output, and streams typed SSE events.
 
 ## Why it exists
@@ -64,7 +66,7 @@ event: retrieval_started
 data: {"query":"What should an operator do when a device loses network connectivity?"}
 
 event: sources_found
-data: {"count":3,"sources":[{"document_id":"SOP-004","title":"Device Network Recovery"},{"document_id":"SOP-004","title":"Device Network Recovery"},{"document_id":"SOP-002","title":"Incident Response and Escalation"}]}
+data: {"count":2,"sources":[{"document_id":"SOP-004","title":"Device Network Recovery"},{"document_id":"SOP-002","title":"Incident Response and Escalation"}]}
 
 event: answer_ready
 data: {"answer":{"status":"answered","answer":"Restart only the network service on the device, verify the physical link, and validate connectivity.","steps":["Record the error state","Verify the physical link","Restart only the network service","Validate connectivity"],"sources":[{"document_id":"SOP-004","title":"Device Network Recovery","section":"Recovery steps","quote":"Restart only the network service on the device.","relevance":"primary"}],"limitations":["A full device restart must not be performed."]}}
@@ -100,7 +102,7 @@ data: {"answer":{"status":"insufficient_evidence","answer":"No approved procedur
 src/tracerag/   settings, models, retrieval, mcp_server, agent, service, api
 data/docs/      six Markdown SOPs (SOP-001 … SOP-006)
 tests/          models, retrieval, mcp tools, api
-docs/           architecture.md, build spec
+docs/           architecture.md
 ```
 
 ## License

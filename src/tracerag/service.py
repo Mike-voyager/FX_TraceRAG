@@ -73,11 +73,16 @@ async def assist(request: AssistRequest) -> AsyncIterator[ServerSentEvent]:
     )
 
     # 2. sources_found (preliminary progress; the agent still calls tools itself)
+    #    Multiple chunks of the same document collapse into one source entry.
     try:
         preliminary = await search_procedures(query, limit=_PRELIMINARY_LIMIT)
-        summaries = [
-            SourceSummary(document_id=c.document_id, title=c.title) for c in preliminary
-        ]
+        unique_sources: dict[str, SourceSummary] = {}
+        for chunk in preliminary:
+            unique_sources.setdefault(
+                chunk.document_id,
+                SourceSummary(document_id=chunk.document_id, title=chunk.title),
+            )
+        summaries = list(unique_sources.values())
         sources_event = SourcesFoundEvent(count=len(summaries), sources=summaries)
     except Exception:
         logger.exception("preliminary retrieval failed")

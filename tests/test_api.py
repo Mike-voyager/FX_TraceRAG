@@ -95,8 +95,12 @@ def test_assist_stream_event_order_with_stubbed_agent(
 
     # sources_found exposes SOP-004 among the preliminary sources.
     sources_payload = json.loads(events[1][1])
-    doc_ids = {s["document_id"] for s in sources_payload["sources"]}
+    source_ids = [s["document_id"] for s in sources_payload["sources"]]
+    doc_ids = set(source_ids)
     assert "SOP-004" in doc_ids
+    # Sources are deduplicated by document_id (count matches unique ids).
+    assert sources_payload["count"] == len(source_ids) == len(doc_ids)
+    assert len(source_ids) == len(set(source_ids))
 
     # answer_ready serializes a valid answered AssistantAnswer referencing SOP-004.
     answer_payload = json.loads(events[2][1])["answer"]
