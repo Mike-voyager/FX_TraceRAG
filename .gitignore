@@ -1,0 +1,26 @@
+# secrets / env
+.env
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# virtual envs
+.venv/
+
+# tooling caches
+.pytest_cache/
+.ruff_cache/
+.pyright/
+
+# editor / agent
+.claude/
+
+# build spec is a source-of-truth reference, not part of the shipped project
+docs/TRACERAG_BUILD_SPEC.md
+
+# local vector stores (not used — keyword retrieval only)
+lancedb/
